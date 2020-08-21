@@ -3,13 +3,15 @@ package com.kata_trading_game.usecases
 import com.kata_trading_game.domain.CurrentGame
 import com.kata_trading_game.domain.Game
 import com.kata_trading_game.domain.Shuffler
+import com.kata_trading_game.domain.TurnMachine
 
 class StartGame(
+    private val currentGame: CurrentGame,
     private val shuffler: Shuffler,
-    private val currentGame: CurrentGame
+    private val turnMachine: TurnMachine
 ) {
     fun execute(): Response {
-        val game = Game(shuffler)
+        val game = Game(shuffler, turnMachine)
         currentGame.value = game
 
         return Response(

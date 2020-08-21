@@ -1,6 +1,6 @@
 package com.kata_trading_game.domain
 
-class User(private val deck: Deck) {
+class User(private val name: String, private val deck: Deck) {
     val health = 30
     var mana = Mana.empty()
     var hand = listOf<Int>()
@@ -10,4 +10,6 @@ class User(private val deck: Deck) {
     }
 
     fun remainingCards() = deck.count()
+
+    override fun toString() = "User($name)"
 }

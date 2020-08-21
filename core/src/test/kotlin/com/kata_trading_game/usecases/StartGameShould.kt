@@ -2,6 +2,7 @@ package com.kata_trading_game.usecases
 
 import com.kata_trading_game.domain.CurrentGame
 import com.kata_trading_game.domain.Shuffler
+import com.kata_trading_game.domain.TurnMachine
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
@@ -13,6 +14,14 @@ class StartGameShould {
         startGame().execute()
 
         assertThat(currentGame.value).isNotNull()
+    }
+
+    @Test fun `determinate the starting player`() {
+        every { turnMachine.next() } returns computerIndex
+
+        startGame().execute()
+
+        assertThat(currentGame.value!!.activePlayer()).isEqualTo(currentGame.value!!.computerUser)
     }
 
     @Test fun `return 30 as the initial health of the human player`() {
@@ -73,14 +82,16 @@ class StartGameShould {
         simulateRandomCards(mutableListOf())
     }
 
-    private fun startGame() = StartGame(shuffler, currentGame)
+    private fun startGame() = StartGame(currentGame, shuffler, turnMachine)
 
     private fun simulateRandomCards(cards: MutableList<Int>) {
         every { shuffler.shuffle(any()) } returns cards
     }
 
     private val shuffler = mockk<Shuffler>()
+    private val turnMachine = mockk<TurnMachine>()
     private val currentGame = CurrentGame()
     private val humanPlayerCards = mutableListOf(0, 1, 5, 0, 1, 2, 2, 3, 2, 3, 3, 4, 3, 4, 5, 4, 6, 7, 6, 8)
     private val computerPlayerCards = mutableListOf(3, 4, 3, 4, 5, 4, 6, 7, 6, 8, 0, 1, 5, 0, 1, 2, 2, 3, 2, 3)
+    private val computerIndex = 1
 }

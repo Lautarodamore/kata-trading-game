@@ -1,8 +1,9 @@
 package com.kata_trading_game.domain
 
-class Game(shuffler: Shuffler) {
-    val humanUser = User(Deck(shuffler))
-    val computerUser = User(Deck(shuffler))
+class Game(shuffler: Shuffler, turnMachine: TurnMachine) {
+    val humanUser = User("Melocoton", Deck(shuffler))
+    val computerUser = User("Reactotron", Deck(shuffler))
+    private val activePlayer = turnMachine.next()
 
     init {
         humanUser.takeCards(3)
@@ -29,4 +30,6 @@ class Game(shuffler: Shuffler) {
         get() = computerUser.hand
     val computerRemainingCards: Int
         get() = computerUser.remainingCards()
+
+    fun activePlayer() = if (this.activePlayer == 0) humanUser else computerUser
 }
