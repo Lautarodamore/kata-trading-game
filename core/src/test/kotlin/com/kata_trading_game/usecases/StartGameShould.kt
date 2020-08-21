@@ -1,8 +1,6 @@
 package com.kata_trading_game.usecases
 
-import com.kata_trading_game.domain.PlayerFactory
 import com.kata_trading_game.domain.Shuffler
-import com.kata_trading_game.infrastructure.PlayerFactoryImpl
 import io.mockk.every
 import io.mockk.mockk
 import org.assertj.core.api.Assertions.assertThat
@@ -68,15 +66,13 @@ class StartGameShould {
         simulateRandomCards(mutableListOf())
     }
 
-    private fun startGame() = StartGame(playerFactory)
+    private fun startGame() = StartGame(shuffler)
 
     private fun simulateRandomCards(cards: MutableList<Int>) {
         every { shuffler.shuffle(any()) } returns cards
-        playerFactory = PlayerFactoryImpl(shuffler)
     }
 
     private val shuffler = mockk<Shuffler>()
     private val humanPlayerCards = mutableListOf(0, 1, 5, 0, 1, 2, 2, 3, 2, 3, 3, 4, 3, 4, 5, 4, 6, 7, 6, 8)
     private val computerPlayerCards = mutableListOf(3, 4, 3, 4, 5, 4, 6, 7, 6, 8, 0, 1, 5, 0, 1, 2, 2, 3, 2, 3)
-    private lateinit var playerFactory: PlayerFactory
 }

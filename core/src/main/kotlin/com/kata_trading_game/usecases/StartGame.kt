@@ -1,9 +1,11 @@
 package com.kata_trading_game.usecases
 
-import com.kata_trading_game.domain.PlayerFactory
+import com.kata_trading_game.domain.Shuffler
+import com.kata_trading_game.infrastructure.PlayerFactory
 
-class StartGame(private val playerFactory: PlayerFactory) {
+class StartGame(private val shuffler: Shuffler) {
     fun execute(): Response {
+        val playerFactory = PlayerFactory(shuffler)
         val humanUser = playerFactory.create()
         val computerUser = playerFactory.create()
 
