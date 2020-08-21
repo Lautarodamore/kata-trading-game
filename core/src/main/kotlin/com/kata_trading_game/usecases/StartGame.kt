@@ -1,25 +1,28 @@
 package com.kata_trading_game.usecases
 
+import com.kata_trading_game.domain.CurrentGame
+import com.kata_trading_game.domain.Game
 import com.kata_trading_game.domain.Shuffler
-import com.kata_trading_game.infrastructure.PlayerFactory
 
-class StartGame(private val shuffler: Shuffler) {
+class StartGame(
+    private val shuffler: Shuffler,
+    private val currentGame: CurrentGame
+) {
     fun execute(): Response {
-        val playerFactory = PlayerFactory(shuffler)
-        val humanUser = playerFactory.create()
-        val computerUser = playerFactory.create()
+        val game = Game(shuffler)
+        currentGame.value = game
 
         return Response(
-            humanUser.health,
-            humanUser.mana.available,
-            humanUser.mana.slots,
-            humanUser.takeCards(3),
-            humanUser.remainingCards(),
-            computerUser.health,
-            computerUser.mana.available,
-            computerUser.mana.slots,
-            computerUser.takeCards(4),
-            computerUser.remainingCards()
+            game.humanHealth,
+            game.humanAvailableMana,
+            game.humanManaSlot,
+            game.humanHand,
+            game.humanRemainingCards,
+            game.computerHealth,
+            game.computerAvailableMana,
+            game.computerManaSlot,
+            game.computerHand,
+            game.computerRemainingCards
         )
     }
 

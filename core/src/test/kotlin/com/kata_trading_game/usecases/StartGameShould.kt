@@ -1,5 +1,6 @@
 package com.kata_trading_game.usecases
 
+import com.kata_trading_game.domain.CurrentGame
 import com.kata_trading_game.domain.Shuffler
 import io.mockk.every
 import io.mockk.mockk
@@ -8,6 +9,12 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class StartGameShould {
+    @Test fun `create the game`() {
+        startGame().execute()
+
+        assertThat(currentGame.value).isNotNull()
+    }
+
     @Test fun `return 30 as the initial health of the human player`() {
         val response = startGame().execute()
 
@@ -66,13 +73,14 @@ class StartGameShould {
         simulateRandomCards(mutableListOf())
     }
 
-    private fun startGame() = StartGame(shuffler)
+    private fun startGame() = StartGame(shuffler, currentGame)
 
     private fun simulateRandomCards(cards: MutableList<Int>) {
         every { shuffler.shuffle(any()) } returns cards
     }
 
     private val shuffler = mockk<Shuffler>()
+    private val currentGame = CurrentGame()
     private val humanPlayerCards = mutableListOf(0, 1, 5, 0, 1, 2, 2, 3, 2, 3, 3, 4, 3, 4, 5, 4, 6, 7, 6, 8)
     private val computerPlayerCards = mutableListOf(3, 4, 3, 4, 5, 4, 6, 7, 6, 8, 0, 1, 5, 0, 1, 2, 2, 3, 2, 3)
 }
