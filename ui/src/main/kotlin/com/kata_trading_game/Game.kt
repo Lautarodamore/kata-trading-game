@@ -7,8 +7,8 @@ class Game(private val display: Display, private val startGame: StartGame) {
     fun start() {
         display.writeLn("Welcome")
         val stats = startGame.execute()
-        display.writeLn("Computer status: Health: ${stats.computerHealth} - Mana: ${stats.computerMana}/${stats.computerManaSlots}")
-        display.writeLn("Your status: Cards: ${stats.humanTakenCards.joinToString(", ")} (${stats.humanRemainingCards} left) - Health: ${stats.humanHealth} - Mana: ${stats.humanMana}/${stats.humanManaSlots}")
+        display.writeLn("Computer status: Health: ${stats.awaitingPlayerHealth} - Mana: ${stats.awaitingPlayerMana}/${stats.awaitingPlayerManaSlots}")
+        display.writeLn("Your status: Cards: ${stats.activePlayerTakenCards.joinToString(", ")} (${stats.activePlayerRemainingCards} left) - Health: ${stats.activePlayerHealth} - Mana: ${stats.activePlayerMana}/${stats.activePlayerManaSlots}")
         display.writeLn("Press space to pick a card from your deck to start the turn...")
     }
 

@@ -8,15 +8,15 @@ import org.junit.jupiter.api.Test
 class GameShould {
     @Test fun `start the game and show user turn after welcome message on start`() {
         every { startGame.execute() } returns StartGame.Response(
-            humanHealth = 30,
-            humanMana = 0,
-            humanManaSlots = 0,
-            humanTakenCards = listOf(0, 1, 5),
-            humanRemainingCards = 17,
-            computerHealth = 30,
-            computerMana = 0,
-            computerManaSlots = 0,
-            computerRemainingCards = 16
+            activePlayerHealth = 30,
+            activePlayerMana = 0,
+            activePlayerManaSlots = 0,
+            activePlayerTakenCards = listOf(0, 1, 5),
+            activePlayerRemainingCards = 17,
+            awaitingPlayerHealth = 30,
+            awaitingPlayerMana = 0,
+            awaitingPlayerManaSlots = 0,
+            awaitingPlayerRemainingCards = 16
         )
 
         game.start()
@@ -32,15 +32,15 @@ class GameShould {
 
     @Test fun `start computer turn on start if computer is the starting player`() {
         every { startGame.execute() } returns StartGame.Response(
-            humanHealth = 30,
-            humanMana = 0,
-            humanManaSlots = 0,
-            humanTakenCards = listOf(0, 1, 5),
-            humanRemainingCards = 17,
-            computerHealth = 30,
-            computerMana = 0,
-            computerManaSlots = 0,
-            computerRemainingCards = 16
+            activePlayerHealth = 30,
+            activePlayerMana = 0,
+            activePlayerManaSlots = 0,
+            activePlayerTakenCards = listOf(0, 1, 5),
+            activePlayerRemainingCards = 17,
+            awaitingPlayerHealth = 30,
+            awaitingPlayerMana = 0,
+            awaitingPlayerManaSlots = 0,
+            awaitingPlayerRemainingCards = 16
         )
         game.start()
 
@@ -55,15 +55,15 @@ class GameShould {
 
     @BeforeEach fun setup() {
         every { startGame.execute() } returns StartGame.Response(
-            humanHealth = 30,
-            humanMana = 0,
-            humanManaSlots = 0,
-            humanTakenCards = listOf(0, 1, 5),
-            humanRemainingCards = 17,
-            computerHealth = 30,
-            computerMana = 0,
-            computerManaSlots = 0,
-            computerRemainingCards = 16
+            activePlayerHealth = 30,
+            activePlayerMana = 0,
+            activePlayerManaSlots = 0,
+            activePlayerTakenCards = listOf(0, 1, 5),
+            activePlayerRemainingCards = 17,
+            awaitingPlayerHealth = 30,
+            awaitingPlayerMana = 0,
+            awaitingPlayerManaSlots = 0,
+            awaitingPlayerRemainingCards = 16
         )
     }
 

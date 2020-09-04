@@ -17,68 +17,49 @@ class StartGameShould {
     }
 
     @Test fun `determinate the starting player`() {
-        every { turnMachine.next() } returns computerTurn
+        every { turnMachine.next() } returns activePlayerTurn
 
         startGame().execute()
 
-        assertThat(currentGame.value!!.activePlayer()).isEqualTo(currentGame.value!!.computerUser)
+        assertThat(currentGame.value!!.activePlayer).isEqualTo(currentGame.value!!.computerUser)
     }
 
     @Test fun `return 30 as the initial health of each player`() {
         val response = startGame().execute()
 
-        assertThat(response.humanHealth).isEqualTo(30)
-        assertThat(response.computerHealth).isEqualTo(30)
-    }
-
-    @Test fun `return 1 of 1 as the initial mana of the starting player`() {
-        every { turnMachine.next() } returns computerTurn
-
-        val response = startGame().execute()
-
-        assertThat(response.computerManaSlots).isEqualTo(1)
-        assertThat(response.computerMana).isEqualTo(1)
-    }
-
-    @Test fun `return 0 of 0 as the initial mana of the awaiting player`() {
-        every { turnMachine.next() } returns computerTurn
-
-        val response = startGame().execute()
-
-        assertThat(response.humanManaSlots).isEqualTo(0)
-        assertThat(response.humanMana).isEqualTo(0)
+        assertThat(response.activePlayerHealth).isEqualTo(30)
+        assertThat(response.awaitingPlayerHealth).isEqualTo(30)
     }
 
     @Test fun `extract and return the 3 top cards from the deck as the initial draw of the starting player`() {
-        every { turnMachine.next() } returns computerTurn
+        every { turnMachine.next() } returns activePlayerTurn
         simulateRandomCards(aShuffledDeck)
 
         val response = startGame().execute()
 
-        assertThat(response.computerRemainingCards).isEqualTo(17)
+        assertThat(response.activePlayerRemainingCards).isEqualTo(17)
     }
 
-    @Test fun `extract and return the 4 top cards from the deck as the initial draw of the next player`() {
-        every { turnMachine.next() } returns computerTurn
+    @Test fun `extract and return the 4 top cards from the deck as the initial draw of the awaiting player`() {
+        every { turnMachine.next() } returns activePlayerTurn
         simulateRandomCards(anotherShuffledDeck)
 
         val response = startGame().execute()
 
-        assertThat(response.humanTakenCards).containsExactlyElementsOf(anotherShuffledDeck.subList(0, 4))
-        assertThat(response.humanRemainingCards).isEqualTo(16)
+        assertThat(response.awaitingPlayerRemainingCards).isEqualTo(16)
     }
 
     @Test fun `extract 1 top card from the deck of the starting player`() {
-        every { turnMachine.next() } returns computerTurn
+        every { turnMachine.next() } returns activePlayerTurn
         simulateRandomCards(aShuffledDeck)
 
         val response = startGame().execute()
 
-        assertThat(response.computerRemainingCards).isEqualTo(16)
+        assertThat(response.awaitingPlayerRemainingCards).isEqualTo(16)
     }
 
     @BeforeEach fun setup() {
-        every { turnMachine.next() } returns computerTurn
+        every { turnMachine.next() } returns activePlayerTurn
         simulateRandomCards(mutableListOf())
     }
 
@@ -93,5 +74,5 @@ class StartGameShould {
     private val currentGame = CurrentGame()
     private val aShuffledDeck = mutableListOf(0, 1, 5, 0, 1, 2, 2, 3, 2, 3, 3, 4, 3, 4, 5, 4, 6, 7, 6, 8)
     private val anotherShuffledDeck = mutableListOf(3, 4, 3, 4, 5, 4, 6, 7, 6, 8, 0, 1, 5, 0, 1, 2, 2, 3, 2, 3)
-    private val computerTurn = 1
+    private val activePlayerTurn = 1
 }

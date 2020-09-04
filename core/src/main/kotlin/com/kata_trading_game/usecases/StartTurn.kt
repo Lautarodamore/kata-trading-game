@@ -5,36 +5,15 @@ import com.kata_trading_game.domain.Game
 import com.kata_trading_game.domain.Shuffler
 import com.kata_trading_game.domain.TurnMachine
 
-class StartTurn(
-    private val currentGame: CurrentGame
-) {
+class StartTurn(private val currentGame: CurrentGame) {
     fun execute(): Response {
         val game = currentGame.value!!
-        game.activePlayer().increaseMana()
-        game.activePlayer().fillMana()
+        val activePlayer = game.activePlayer
+        activePlayer.increaseMana()
+        activePlayer.fillMana()
 
-        return Response(
-            game.humanHealth,
-            game.humanAvailableMana,
-            game.humanManaSlot,
-            game.humanHand,
-            game.humanRemainingCards,
-            game.computerHealth,
-            game.computerAvailableMana,
-            game.computerManaSlot,
-            game.computerRemainingCards
-        )
+        return Response(activePlayer.mana.slots, activePlayer.mana.available)
     }
 
-    data class Response(
-        val activePlayerHealth: Int,
-        val activePlayerMana: Int,
-        val activePlayerManaSlots: Int,
-        val activePlayerHand: List<Int>,
-        val activePlayerRemainingCards: Int,
-        val awaitingPlayerHealth: Int,
-        val awaitingPlayerMana: Int,
-        val awaitingPlayerManaSlots: Int,
-        val awaitingPlayerRemainingCards: Int
-    )
+    data class Response(val activePlayerManaSlots: Int, val activePlayerAvailableMana: Int)
 }
