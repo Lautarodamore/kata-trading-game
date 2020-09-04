@@ -12,4 +12,12 @@ class User(private val name: String, private val deck: Deck) {
     fun remainingCards() = deck.count()
 
     override fun toString() = "User($name)"
+
+    fun increaseMana() {
+        mana = mana.increase()
+    }
+
+    fun fillMana() {
+        mana = mana.fill()
+    }
 }

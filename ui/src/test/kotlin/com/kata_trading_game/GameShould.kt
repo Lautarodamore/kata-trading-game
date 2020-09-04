@@ -6,13 +6,7 @@ import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
 class GameShould {
-    @Test fun `show welcome message on start`() {
-        game.start()
-
-        verify { display.writeLn("Welcome") }
-    }
-
-    @Test fun `show user turn after welcome message`() {
+    @Test fun `start the game and show user turn after welcome message on start`() {
         every { startGame.execute() } returns StartGame.Response(
             humanHealth = 30,
             humanMana = 0,
@@ -22,16 +16,40 @@ class GameShould {
             computerHealth = 30,
             computerMana = 0,
             computerManaSlots = 0,
-            computerTakenCards = listOf(2, 1, 0, 4),
             computerRemainingCards = 16
         )
 
         game.start()
 
+        verify { startGame.execute() }
         verifySequence {
             display.writeLn("Welcome")
-            display.writeLn("It's your turn...")
-            display.writeLn("(Cards: 0, 1, 5 (17 left) - Health: 30 - Mana: 0/0)")
+            display.writeLn("Computer status: Health: 30 - Mana: 0/0")
+            display.writeLn("Your status: Cards: 0, 1, 5 (17 left) - Health: 30 - Mana: 0/0")
+            display.writeLn("Press space to pick a card from your deck to start the turn...")
+        }
+    }
+
+    @Test fun `start computer turn on start if computer is the starting player`() {
+        every { startGame.execute() } returns StartGame.Response(
+            humanHealth = 30,
+            humanMana = 0,
+            humanManaSlots = 0,
+            humanTakenCards = listOf(0, 1, 5),
+            humanRemainingCards = 17,
+            computerHealth = 30,
+            computerMana = 0,
+            computerManaSlots = 0,
+            computerRemainingCards = 16
+        )
+        game.start()
+
+        game.startTurn()
+
+        verifySequence {
+            display.writeLn("Computer status: Health: 30 - Mana: 0/0")
+            display.writeLn("Your status: Cards: 0, 1, 5 (17 left) - Health: 30 - Mana: 0/0")
+            display.writeLn("Press space to pick a card from your deck to start the turn...")
         }
     }
 
@@ -45,7 +63,6 @@ class GameShould {
             computerHealth = 30,
             computerMana = 0,
             computerManaSlots = 0,
-            computerTakenCards = listOf(2, 1, 0, 4),
             computerRemainingCards = 16
         )
     }

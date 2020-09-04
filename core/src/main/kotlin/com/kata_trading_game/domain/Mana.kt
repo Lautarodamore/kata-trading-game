@@ -1,14 +1,11 @@
 package com.kata_trading_game.domain
 
-class Mana(val available: Int, val slots: Int) {
-    fun slotUp(): Mana {
-        return Mana(this.available, recalculateSlots())
-    }
+import kotlin.math.min
 
-    private fun recalculateSlots(): Int {
-        if (this.slots > 10) return 10
-        return this.slots + 1
-    }
+class Mana(val available: Int, val slots: Int) {
+    fun increase() = Mana(this.available, min(this.slots + 1, 10))
+
+    fun fill() = Mana(this.slots, this.slots)
 
     companion object {
         fun empty() = Mana(0, 0)
